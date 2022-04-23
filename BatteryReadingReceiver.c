@@ -3,15 +3,16 @@
 #include <stdlib.h>
 #include "BatteryReadingReceiver.h"
 
-float ComputeSMA(float data[])
+float* ComputeSMA(float data[])
 {
     float sum = 0.0;
-    float average;
+    float average[NO_OF_READINGS] = {0};
     for(int i=0; i<NO_OF_READINGS; i++)
         {
-            sum += data[i];
+            if(i<5) sum += data[i];
+            else sum = sum + data[i] - data[i-5];
+            average[i] = sum/5;
         }
-        average = sum/NO_OF_READINGS;
         return average;
 }
 
@@ -49,17 +50,17 @@ void ReadBatteryReadingsfromConsole(float* SOC, float* Temperature)
     }
 }
 
-void PrintComputedReadingsOnConsole(float *BMSParameter, float MaxValue, float Minvalue, float SMA)
+void PrintComputedReadingsOnConsole(float *BMSParameter, float MaxValue, float Minvalue, float* SMA)
 {
   int readingIndex = 0;
   printf("Data received from sender\n");
   
   for(readingIndex = 0; readingIndex < NO_OF_READINGS; readingIndex++)
   {
-    printf("%f\n",BMSParameter[readingIndex]);
+    printf("Current Value: %f, SMA of last 5 Values: %f\n",BMSParameter[readingIndex], SMA[readingIndex]);
   }
-  printf("Max value: %f, Min value: %f, SMA: %f\n",MaxValue,Minvalue,SMA);
-  
+  printf("Max value: %f, Min value: %f\n",MaxValue,Minvalue);
+ 
 }
 
 void BatteryReceiver(float* SOC, float* Temperature)

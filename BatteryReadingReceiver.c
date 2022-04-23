@@ -9,7 +9,7 @@ void ComputeSMA(float data[], float average[])
     for(int i=0; i<NO_OF_READINGS; i++)
     {
         if(i<5) sum += data[i];
-        else sum = sum + data[i] - data[i-5];
+        else sum = sum + data[i] - data[i-5];   //to get sum of last 5 values
         average[i] = sum/5;
     }
 }
@@ -63,8 +63,11 @@ void PrintComputedReadingsOnConsole(float *BMSParameter, float MaxValue, float M
 
 void BatteryReceiver(float* SOC, float* Temperature)
 {
-  float average[NO_OF_READINGS] = {0};
+  float average_SOC[NO_OF_READINGS] = {0};
+  float average_Temp[NO_OF_READINGS] = {0};
   ReadBatteryReadingsfromConsole(SOC, Temperature);
-  PrintComputedReadingsOnConsole(SOC,ComputeMax(SOC),ComputeMin(SOC),ComputeSMA(SOC, average));
-  PrintComputedReadingsOnConsole(Temperature,ComputeMax(Temperature),ComputeMin(Temperature),ComputeSMA(Temperature, average));
+  ComputeSMA(SOC, average_SOC);
+  ComputeSMA(SOC, average_Temp);
+  PrintComputedReadingsOnConsole(SOC,ComputeMax(SOC),ComputeMin(SOC),average_SOC);
+  PrintComputedReadingsOnConsole(Temperature,ComputeMax(Temperature),ComputeMin(Temperature),average_Temp);
 }

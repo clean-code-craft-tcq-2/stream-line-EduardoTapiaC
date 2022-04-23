@@ -26,6 +26,12 @@ jobs:
     - name: run
       run: ./sender
 
+    - name: build receiver
+      run: g++ -Wall -Wextra -fprofile-arcs -ftest-coverage -o testreceiver BatteryReadingReceiver.cpp ./BatteryReadingReceiver.c
+
+    - name: Pipeline sender/receiver
+      run: ./sender | ./testreceiver 
+
     - name: collect coverage
       run: gcovr --gcov-exclude=".*test.*" -r . --html --html-details -o coverage.html --print-summary
 

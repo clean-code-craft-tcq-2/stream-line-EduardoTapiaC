@@ -1,6 +1,6 @@
 #define NO_OF_READINGS 50
 
-float ComputeSMA(float data[]);
+void ComputeSMA(float data[], float average[]);
 float ComputeMax(float data[]);
 float ComputeMin(float data[]);
 

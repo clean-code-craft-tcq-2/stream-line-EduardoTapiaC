@@ -5,7 +5,7 @@
 
 float ComputeSMA(float data[])
 {
-    int sum;
+    float sum = 0.0;
     float average;
     for(int i=0; i<NO_OF_READINGS; i++)
         {
